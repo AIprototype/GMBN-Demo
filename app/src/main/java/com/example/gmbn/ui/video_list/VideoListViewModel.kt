@@ -40,6 +40,14 @@ class VideoListViewModel @Inject constructor(
         return errorMessageLiveData
     }
 
+    fun playListResponseListener(): MutableLiveData<PlayListItemResponseModel> {
+        return playListResponseLiveData
+    }
+
+    fun playListItemListener(): MutableLiveData<ArrayList<Item>> {
+        return playListItemLiveData
+    }
+
     fun fetchVideoData(nextPageToken: String) {
         isLoadingLiveData.value = true
         if (NetWorkUtil.isNetworkAvailable(context)) {

@@ -169,7 +169,7 @@ data class Snippet(
 }
 
 data class Thumbnails(
-    @SerializedName("medium") val medium: Medium?
+    @SerializedName("high") val medium: Medium?
 ) {
     override fun toString(): String {
         return "Thumbnails(medium=$medium)"

@@ -1,36 +1,38 @@
 package com.example.gmbn.ui.video_list
 
-import android.app.Application
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import com.example.gmbn.BuildConfig
+import androidx.paging.cachedIn
 import com.example.gmbn.data.network.models.response.Item
-import com.example.gmbn.data.network.models.response.PlayListItemResponseModel
-import com.example.gmbn.utils.NetWorkUtil
-import kotlinx.coroutines.launch
-import java.lang.Exception
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class VideoListViewModel @Inject constructor(
-    private val context: Application,
     private val videoListRepository: VideoListRepository
 ) : ViewModel() {
 
-    private val playListItemLiveData = MutableLiveData<ArrayList<Item>>()
-    private val playListResponseLiveData = MutableLiveData<PlayListItemResponseModel>()
+    val playListItemLiveData = MutableLiveData<ArrayList<Item>>()
+    val positionClicked = MutableLiveData<Int>()
 
-    val list:LiveData<PagingData<Item>> = videoListRepository.getPlayListItemsPaging()
+    fun apiData(): Flow<PagingData<Item>> {
+        return videoListRepository.getPlayListItemsPaging().cachedIn(viewModelScope)
+    }
 
-    private var nextPageId: String? = ""
-
-    fun playListResponseListener(): MutableLiveData<PlayListItemResponseModel> {
-        return playListResponseLiveData
+    fun updatePlayListItemList(items: ArrayList<Item>) {
+        playListItemLiveData.value = items
     }
 
     fun playListItemListener(): MutableLiveData<ArrayList<Item>> {
         return playListItemLiveData
+    }
+
+    fun setPositionClicked(pos: Int) {
+        positionClicked.value = pos
+    }
+
+    fun positionClickedListener(): MutableLiveData<Int> {
+        return positionClicked
     }
 }

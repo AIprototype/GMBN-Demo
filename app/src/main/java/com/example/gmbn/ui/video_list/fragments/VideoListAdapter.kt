@@ -1,4 +1,4 @@
-package com.example.gmbn.ui.video_list
+package com.example.gmbn.ui.video_list.fragments
 
 import android.view.LayoutInflater
 import android.view.View

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="itemData"
+            type="com.example.gmbn.data.network.models.response.Item" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.video_list.fragments.VideoDetailFragment">
+
+        <TextView
+            android:layout_width="match_parent"
+            tools:text="Video description demo"
+            android:layout_height="match_parent"
+            android:text="@{itemData.snippet.description}" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

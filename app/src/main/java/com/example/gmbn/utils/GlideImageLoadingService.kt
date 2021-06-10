@@ -26,7 +26,8 @@ class GlideImageLoadingService(var context: Context) : ImageLoadingService {
             .skipMemoryCache(false)
             .placeholder(circularProgressDrawable)
             .error(R.drawable.ic_launcher_background)
-            //.centerCrop()
+            .centerCrop()
+            //.fitCenter()
             .into(imageView)
     }
 

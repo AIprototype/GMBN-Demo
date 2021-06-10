@@ -14,7 +14,10 @@ class VideoListPagingSource constructor(
     private val apiInterface: ApiInterface
 ): PagingSource<String, Item>() {
     override fun getRefreshKey(state: PagingState<String, Item>): String? {
-        TODO("Not yet implemented")
+        return state.anchorPosition?.let { anchorPosition ->
+            val anchorPage = state.closestPageToPosition(anchorPosition)
+            anchorPage?.prevKey ?: anchorPage?.nextKey
+        }
     }
 
     override suspend fun load(params: LoadParams<String>): LoadResult<String, Item> {

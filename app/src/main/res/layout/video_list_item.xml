@@ -18,7 +18,7 @@
         <ImageView
             android:id="@+id/thumbnail_iv"
             android:layout_width="match_parent"
-            android:layout_height="225dp"
+            android:layout_height="230dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -28,7 +28,7 @@
         <View
             android:id="@+id/view"
             android:layout_width="match_parent"
-            android:layout_height="225dp"
+            android:layout_height="230dp"
             android:background="@drawable/image_shadow"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

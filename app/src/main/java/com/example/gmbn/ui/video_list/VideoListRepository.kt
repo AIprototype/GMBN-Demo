@@ -8,16 +8,17 @@ import androidx.paging.liveData
 import com.example.gmbn.BuildConfig
 import com.example.gmbn.data.network.ApiInterface
 import com.example.gmbn.data.network.models.response.Item
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 
 class VideoListRepository @Inject constructor(
     private val apiInterface: ApiInterface
 ) {
-    fun getPlayListItemsPaging():LiveData<PagingData<Item>> = Pager(
-        config = PagingConfig(BuildConfig.MAX_RESULTS, 1, false),
+    fun getPlayListItemsPaging():Flow<PagingData<Item>> = Pager(
+        config = PagingConfig(BuildConfig.MAX_RESULTS, 5, true),
         pagingSourceFactory = {
             VideoListPagingSource(apiInterface)
         }
-    ).liveData
+    ).flow
 }

@@ -1,29 +1,36 @@
 package com.example.gmbn.ui.video_list
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.LoadState
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.gmbn.R
-import com.example.gmbn.data.network.models.response.Item
 import com.example.gmbn.databinding.ActivityVideoListBinding
 import com.example.gmbn.di.ViewModelFactory
-import com.example.gmbn.utils.ItemClickListener
+import com.example.gmbn.ui.video_list.fragments.VideoDetailFragment
+import com.example.gmbn.ui.video_list.fragments.VideoListFragment
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_video_list.*
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
-class VideoListActivity : AppCompatActivity(), ItemClickListener {
+class VideoListActivity : AppCompatActivity(), HasAndroidInjector {
 
     @Inject
     internal lateinit var viewModelFactory: ViewModelFactory
     private lateinit var videoListViewModel: VideoListViewModel
     private lateinit var binding: ActivityVideoListBinding
-    private lateinit var videoListAdapter: VideoListAdapter
+
+    private lateinit var videoListFragment: VideoListFragment
+    private lateinit var videoDetailFragment: VideoDetailFragment
+
+    @Inject
+    internal lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+    override fun androidInjector(): AndroidInjector<Any> = fragmentDispatchingAndroidInjector
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,45 +40,44 @@ class VideoListActivity : AppCompatActivity(), ItemClickListener {
         videoListViewModel =
             ViewModelProvider(this, viewModelFactory).get(VideoListViewModel::class.java)
         binding.viewModel = videoListViewModel
-
         setUi()
         setObservers()
     }
 
-    private fun setUi() {
-        videoListAdapter = VideoListAdapter(VideoDiffCallBack(), this)
-        video_list_rv.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        video_list_rv.adapter = videoListAdapter
-
-        videoListAdapter.addLoadStateListener {
-            when (it.refresh) {
-                is LoadState.Loading -> {
-                    main_progress_bar.visibility = View.VISIBLE
-                    video_list_rv.visibility = View.GONE
-                }
-                is LoadState.NotLoading -> {
-                    main_progress_bar.visibility = View.GONE
-                    video_list_rv.visibility = View.VISIBLE
-                }
-                is LoadState.Error -> {
-                    main_progress_bar.visibility = View.GONE
-                    video_list_rv.visibility = View.GONE
-                    Toast.makeText(this, "Error Occurred", Toast.LENGTH_SHORT).show()
-                }
-            }
+    private fun makeCurrentFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.frame_layout, fragment)
+            addToBackStack(fragment::class.java.simpleName)
+            commit()
         }
     }
 
+    private fun setUi() {
+        videoListFragment = VideoListFragment()
+        videoDetailFragment = VideoDetailFragment()
+
+        makeCurrentFragment(videoListFragment)
+    }
+
     private fun setObservers() {
-        videoListViewModel.list.observe(this, {
-            if (it != null) {
-                //videoListAdapter.submitList(it as List<Item?>?)
-                videoListAdapter.submitData(lifecycle, it)
-            }
+        videoListViewModel.positionClickedListener().observe(this, {
+            makeCurrentFragment(videoDetailFragment)
         })
     }
 
-    override fun onClick(view: View?, position: Int, isLongClick: Boolean) {
-        Toast.makeText(this, "clicked: $position", Toast.LENGTH_SHORT).show()
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount <= 1) {
+            super.onBackPressed()
+        } else {
+            supportFragmentManager.popBackStack()
+        }
+    }
+
+    private fun clearBackStack() {
+        val fm: FragmentManager = supportFragmentManager
+        val count: Int = fm.backStackEntryCount
+        for (i in 0 until count) {
+            fm.popBackStackImmediate()
+        }
     }
 }

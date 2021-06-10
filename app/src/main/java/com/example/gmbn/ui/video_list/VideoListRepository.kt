@@ -1,14 +1,14 @@
 package com.example.gmbn.ui.video_list
 
-import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.liveData
 import com.example.gmbn.BuildConfig
 import com.example.gmbn.data.network.ApiInterface
 import com.example.gmbn.data.network.models.response.Item
+import com.example.gmbn.data.network.models.response.VideoDataResponseModel
 import kotlinx.coroutines.flow.Flow
+import retrofit2.Response
 import javax.inject.Inject
 
 
@@ -21,4 +21,8 @@ class VideoListRepository @Inject constructor(
             VideoListPagingSource(apiInterface)
         }
     ).flow
+
+    suspend fun getVideoDuration(videoId: String): Response<VideoDataResponseModel> {
+        return apiInterface.getVideoDetails(videoId)
+    }
 }

@@ -67,6 +67,7 @@ class VideoListActivity : AppCompatActivity(), HasAndroidInjector {
 
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount <= 1) {
+            supportFragmentManager.popBackStack()
             super.onBackPressed()
         } else {
             supportFragmentManager.popBackStack()

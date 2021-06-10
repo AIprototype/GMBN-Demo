@@ -1,6 +1,8 @@
 package com.example.gmbn.data.network
 
+import com.example.gmbn.BuildConfig
 import com.example.gmbn.data.network.models.response.PlayListItemResponseModel
+import com.example.gmbn.data.network.models.response.VideoDataResponseModel
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -21,5 +23,12 @@ interface ApiInterface {
         @Query("playlistId") playlistId: String,
         @Query("key") key: String
     ): Response<PlayListItemResponseModel>
+
+    @GET("youtube/v3/videos")
+    suspend fun getVideoDetails(
+        @Query("id") videoId: String,
+        @Query("part") part: String = "contentDetails",
+        @Query("key") key: String = BuildConfig.API_KEY,
+    ): Response<VideoDataResponseModel>
 
 }

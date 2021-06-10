@@ -32,8 +32,8 @@ class VideoListFragment : Fragment(), ItemClickListener {
     private lateinit var videoListAdapter: VideoListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         AndroidSupportInjection.inject(this)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(

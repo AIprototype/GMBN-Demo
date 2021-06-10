@@ -25,8 +25,8 @@ class VideoDetailFragment : Fragment() {
     private lateinit var binding: FragmentVideoDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         AndroidSupportInjection.inject(this)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(

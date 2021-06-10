@@ -33,10 +33,10 @@ class VideoListActivity : AppCompatActivity(), HasAndroidInjector {
     override fun androidInjector(): AndroidInjector<Any> = fragmentDispatchingAndroidInjector
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_video_list)
         //setContentView(R.layout.activity_video_list)
-        AndroidInjection.inject(this)
         videoListViewModel =
             ViewModelProvider(this, viewModelFactory).get(VideoListViewModel::class.java)
         binding.viewModel = videoListViewModel

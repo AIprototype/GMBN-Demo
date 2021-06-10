@@ -16,7 +16,7 @@ interface ApiInterface {
 // &playlistId=UU_A--fhX5gea0i4UtpD99Gg
 // &key=AIzaSyD7M4VLaasbIUuT6e9Jc9YKt29TKiLeFKE
     @GET("youtube/v3/playlistItems")
-    suspend fun getSettingsData(
+    suspend fun getPlayListVideoData(
         @Query("part") part: String,
         @Query("maxResults") maxResults: Int,
         @Query("pageToken") pageToken: String,

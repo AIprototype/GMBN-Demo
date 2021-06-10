@@ -24,7 +24,7 @@ class VideoListPagingSource constructor(
         val position = params.key?: STARTING_PAGE_ID
 
         return try {
-            val data = apiInterface.getSettingsData("snippet", BuildConfig.MAX_RESULTS, position, BuildConfig.PlaylistID, BuildConfig.API_KEY)
+            val data = apiInterface.getPlayListVideoData("snippet", BuildConfig.MAX_RESULTS, position, BuildConfig.PlaylistID, BuildConfig.API_KEY)
             LoadResult.Page(
                 data = data.body()?.items as List<Item>,
                 prevKey = data.body()?.prevPageToken,
